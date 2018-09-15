@@ -14,11 +14,6 @@ locals {
     aws_az3 = "${data.aws_availability_zones.aws_azs.names[2]}"
 }
 
-provider "aws" {
-    region = "${var.aws_region}"
-    profile = "${var.aws_profile}"
-}
-
 resource "aws_vpc" "vpc" {
     cidr_block = "${var.vpc_cidr}"
     enable_dns_hostnames = true
@@ -110,11 +105,11 @@ resource "aws_security_group" "sg_pub_ssh_access" {
         )}"    
 }
 
-resource "aws_security_group_rule" "sg_pub_ssh_ingress" {
+resource "aws_security_group_rule" "sg_pub_ssh_access_ingress" {
     type = "ingress"
     from_port = 22
     to_port = 22
     protocol = "tcp"
-    security_group_id = "${aws_security_group.sg_pub_ssh.id}"
+    security_group_id = "${aws_security_group.sg_pub_ssh_access.id}"
     cidr_blocks = ["0.0.0.0/0"]
 }
